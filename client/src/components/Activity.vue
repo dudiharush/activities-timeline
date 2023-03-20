@@ -41,15 +41,26 @@
             }"
           />
         </div>
-        <div>
-          <div :style="{ 'font-weight': 'bold', 'text-align': 'start' }">
+        <div
+          :style="{
+            'flex-direction': 'column',
+            display: 'flex',
+            gap: '4px',
+          }"
+        >
+          <div
+            :style="{
+              'font-weight': 'bold',
+              'text-align': 'start',
+              'text-transform': 'capitalize',
+            }"
+          >
             {{ activity.topic_data.name }}
           </div>
-          <div :style="{ display: 'flex' }">
-            <div>{{ activity.displayDate }}</div>
-            <div>&#8226;</div>
-            <div>{{ activity.displayTime }}</div>
-          </div>
+          <ActivityTime
+            :date="activity.displayDate"
+            :time="activity.displayTime"
+          />
         </div>
       </div>
       <div
@@ -76,12 +87,14 @@
 import { getSettings } from "../activitySettingsMap";
 import EyeIcon from "./EyeIcon.vue";
 import ActivityModal from "./ActivityModal.vue";
+import ActivityTime from "./ActivityTime.vue";
 
 export default {
   props: ["activity"],
   components: {
     EyeIcon,
     ActivityModal,
+    ActivityTime,
   },
   computed: {
     isJr() {

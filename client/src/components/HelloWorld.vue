@@ -37,7 +37,7 @@ export default {
           ...item,
           displayDate: date.toLocaleString("en-us", {
             year: "numeric",
-            month: "long",
+            month: "short",
             day: "numeric",
           }),
           displayTime: date.toLocaleTimeString([], { timeStyle: "short" }),
