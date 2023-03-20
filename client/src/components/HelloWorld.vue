@@ -1,11 +1,10 @@
 <template>
   <div :style="{ margin: 'auto', width: '60%' }">
     <ActivityGroup
-      v-for="(activities, monthName, index) in activitiesByMonth"
-      :activities="activities"
-      :monthName="monthName"
+      v-for="(activityGroup, key, index) in activityGroupsByMonth"
+      :activityGroup="activityGroup"
       :index="index"
-      :key="monthName"
+      :key="key"
     >
     </ActivityGroup>
   </div>
@@ -25,13 +24,16 @@ export default {
     };
   },
   computed: {
-    activitiesByMonth: function () {
+    activityGroupsByMonth: function () {
       const groups = this.listItems.reduce((group, item) => {
         const date = new Date(0);
         date.setUTCSeconds(item.d_created);
-        const month = date.toLocaleString("en-us", { month: "short" });
-        group[month] = group[month] || [];
-        group[month].push({
+        const month = date.getMonth();
+        group[month] = group[month] || {
+          name: date.toLocaleString("en-us", { month: "short" }),
+          activities: [],
+        };
+        group[month].activities.push({
           ...item,
           displayDate: date.toLocaleString("en-us", {
             year: "numeric",

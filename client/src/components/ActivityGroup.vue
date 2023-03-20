@@ -21,10 +21,10 @@
         'background-color': '#FCF7E1',
       }"
     >
-      {{ monthName }}
+      {{ activityGroup.name }}
     </div>
     <Activity
-      v-for="activity in activities"
+      v-for="activity in activityGroup.activities"
       :key="activity.id"
       :activity="activity"
     >
@@ -39,6 +39,6 @@ export default {
   components: {
     Activity,
   },
-  props: ["activities", "monthName", "index"],
+  props: ["activityGroup", "monthName", "index"],
 };
 </script>

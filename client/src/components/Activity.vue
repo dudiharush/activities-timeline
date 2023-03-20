@@ -35,7 +35,7 @@
           />
         </div>
         <div>
-          <div :style="{ 'font-weight': 'bold' }">
+          <div :style="{ 'font-weight': 'bold', 'text-align': 'start' }">
             {{ activity.topic_data.name }}
           </div>
           <div :style="{ display: 'flex' }">
