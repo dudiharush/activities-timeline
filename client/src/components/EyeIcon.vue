@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="eye-button"
+    class="eye-icon"
     width="24px"
     height="24px"
     viewBox="0 0 24 24"
@@ -94,7 +94,7 @@ export default {};
 </script>
 
 <style scoped>
-.eye-button {
+.eye-icon {
   fill: #017575;
 }
 </style>

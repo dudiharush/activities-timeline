@@ -1,5 +1,7 @@
 <template>
   <div>
+    <ActivityModal v-show="showModal" @close-modal="showModal = false" />
+
     <div :style="{ height: '15px', 'padding-inline-start': '50px' }">
       <div
         :style="{
@@ -59,7 +61,7 @@
           Score: <b>{{ activity.score }}</b
           >/<b>{{ activity.possible_score }}</b>
         </div>
-        <div class="zoom-element">
+        <div class="zoom-element" @click="showModal = true">
           <div :style="{ display: 'flex', gap: '4px' }">
             <EyeIcon />
             <div :style="{ margin: 'auto' }">View work</div>
@@ -73,16 +75,23 @@
 <script>
 import { getSettings } from "../activitySettingsMap";
 import EyeIcon from "./EyeIcon.vue";
+import ActivityModal from "./ActivityModal.vue";
 
 export default {
   props: ["activity"],
   components: {
     EyeIcon,
+    ActivityModal,
   },
   computed: {
     isJr() {
       return this.activity.product === "bpjr";
     },
+  },
+  data() {
+    return {
+      showModal: false,
+    };
   },
   methods: {
     activitySetting: function (t) {
