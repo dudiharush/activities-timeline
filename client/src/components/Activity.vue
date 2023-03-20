@@ -29,18 +29,7 @@
           gap: '10px',
         }"
       >
-        <div class="activity-icon" :class="{ 'jr-icon': isJr }">
-          <div class="jr-tag">Jr.</div>
-          <img
-            :src="require(`../assets/topics/${activity.iconFileName}`)"
-            :style="{
-              display: 'block',
-              'margin-left': 'auto',
-              'margin-right': 'auto',
-              width: '100%',
-            }"
-          />
-        </div>
+        <ActivityIcon :isJr="isJr" :iconFileName="activity.iconFileName" />
         <div
           :style="{
             'flex-direction': 'column',
@@ -88,6 +77,7 @@ import { getSettings } from "../activitySettingsMap";
 import EyeIcon from "./EyeIcon.vue";
 import ActivityModal from "./ActivityModal.vue";
 import ActivityTime from "./ActivityTime.vue";
+import ActivityIcon from "./ActivityIcon.vue";
 
 export default {
   props: ["activity"],
@@ -95,6 +85,7 @@ export default {
     EyeIcon,
     ActivityModal,
     ActivityTime,
+    ActivityIcon,
   },
   computed: {
     isJr() {
