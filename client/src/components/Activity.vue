@@ -1,7 +1,5 @@
 <template>
   <div>
-    <ActivityModal v-show="showModal" @close-modal="showModal = false" />
-
     <div :style="{ height: '15px', 'padding-inline-start': '50px' }">
       <div
         :style="{
@@ -55,7 +53,7 @@
       <div
         :style="{ display: 'flex', gap: '10px' }"
         class="activity-settings"
-        :class="activitySetting(activity.resource_type)"
+        :class="getActivityClasses(activity.resource_type)"
       >
         <div class="score-element">
           Score: <b>{{ activity.score }}</b
@@ -66,6 +64,11 @@
             <EyeIcon />
             <div :style="{ margin: 'auto' }">View work</div>
           </div>
+          <ActivityModal
+            v-show="showModal"
+            @close-modal="showModal = false"
+            :activity="activity"
+          />
         </div>
       </div>
     </div>
@@ -98,7 +101,7 @@ export default {
     };
   },
   methods: {
-    activitySetting: function (t) {
+    getActivityClasses: function (t) {
       debugger;
       const x = getSettings(t);
       console.log(x);
@@ -109,40 +112,6 @@ export default {
 </script>
 
 <style scoped>
-.activity-icon {
-  height: 25px;
-  aspect-ratio: 1;
-  border-radius: 20px;
-  padding: 5px;
-  background-color: #01c5c4;
-  position: relative;
-}
-
-.activity-icon.jr-icon {
-  background-color: #f7ae11;
-}
-
-.jr-icon .jr-tag {
-  display: flex;
-}
-
-.jr-tag {
-  width: 15px;
-  font-size: 10px;
-  font-weight: bold;
-  border-radius: 8px;
-  aspect-ratio: 1;
-  background-color: #ffc45c;
-  position: absolute;
-  right: -2px;
-  bottom: -2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  display: none;
-  font-style: italic;
-}
-
 .activity-settings {
   color: #017575;
   align-items: center;

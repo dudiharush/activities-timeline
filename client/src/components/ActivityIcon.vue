@@ -40,4 +40,13 @@ export default {
   display: none;
   font-style: italic;
 }
+
+.activity-icon {
+  height: 25px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: #01c5c4;
+  position: relative;
+}
 </style>
