@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import ActivityPage from '../views/ActivityPage.vue';
+
 
 Vue.use(VueRouter);
 
@@ -10,6 +12,7 @@ const routes = [
     name: 'home',
     component: Home,
   },
+  { path: '/activity/:id', component: ActivityPage },
 ];
 
 const router = new VueRouter({

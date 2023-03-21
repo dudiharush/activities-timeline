@@ -12,6 +12,7 @@
 
 <script>
 import ActivityGroup from "./ActivityGroup.vue";
+import { formatActivity } from "../utils.js";
 
 export default {
   components: {
@@ -33,16 +34,8 @@ export default {
           name: date.toLocaleString("en-us", { month: "short" }),
           activities: [],
         };
-        group[month].activities.push({
-          ...item,
-          displayDate: date.toLocaleString("en-us", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          }),
-          displayTime: date.toLocaleTimeString([], { timeStyle: "short" }),
-          iconFileName: item.topic_data.icon_path.split("/").at(-1),
-        });
+        const formattedActivity = formatActivity(item);
+        group[month].activities.push(formattedActivity);
         return group;
       }, {});
       return groups;

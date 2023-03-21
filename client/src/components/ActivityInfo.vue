@@ -34,7 +34,6 @@
 </template>
   
   <script>
-import CloseIcon from "./CloseIcon.vue";
 import ActivityIcon from "./ActivityIcon.vue";
 import ActivityTime from "./ActivityTime.vue";
 import ActivityScore from "./ActivityScore.vue";
