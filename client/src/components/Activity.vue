@@ -55,23 +55,23 @@
         class="activity-settings"
         :class="getActivityClasses(activity.resource_type)"
       >
-        <div class="score-element">
-          Score: <b>{{ activity.score }}</b
-          >/<b>{{ activity.possible_score }}</b>
-        </div>
+        <ActivityScore
+          :score="activity.score"
+          :possibleScore="activity.possible_score"
+        />
         <div class="zoom-element" @click="showModal = true">
           <div :style="{ display: 'flex', gap: '4px' }">
             <EyeIcon />
             <div :style="{ margin: 'auto' }">View work</div>
           </div>
-          <ActivityModal
-            v-show="showModal"
-            @close-modal="showModal = false"
-            :activity="activity"
-          />
         </div>
       </div>
     </div>
+    <ActivityModal
+      v-show="showModal"
+      @close-modal="showModal = false"
+      :activity="activity"
+    />
   </div>
 </template>
 
@@ -81,6 +81,7 @@ import EyeIcon from "./EyeIcon.vue";
 import ActivityModal from "./ActivityModal.vue";
 import ActivityTime from "./ActivityTime.vue";
 import ActivityIcon from "./ActivityIcon.vue";
+import ActivityScore from "./ActivityScore.vue";
 
 export default {
   props: ["activity"],
@@ -89,6 +90,7 @@ export default {
     ActivityModal,
     ActivityTime,
     ActivityIcon,
+    ActivityScore,
   },
   computed: {
     isJr() {
@@ -101,11 +103,8 @@ export default {
     };
   },
   methods: {
-    getActivityClasses: function (t) {
-      debugger;
-      const x = getSettings(t);
-      console.log(x);
-      return x;
+    getActivityClasses: function (type) {
+      return getSettings(type);
     },
   },
 };
