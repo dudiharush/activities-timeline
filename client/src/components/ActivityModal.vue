@@ -13,7 +13,10 @@
         }"
       >
         <div>
-          <ActivityIcon :isJr="false" :iconFileName="activity.iconFileName" />
+          <ActivityIcon
+            :product="activity.product"
+            :iconFileName="activity.iconFileName"
+          />
         </div>
         <div :style="{ 'font-size': '40px', color: 'black' }">
           {{ activity.topic_data.name }}

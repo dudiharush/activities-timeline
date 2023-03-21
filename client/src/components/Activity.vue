@@ -27,7 +27,10 @@
           gap: '10px',
         }"
       >
-        <ActivityIcon :isJr="isJr" :iconFileName="activity.iconFileName" />
+        <ActivityIcon
+          :product="activity.product"
+          :iconFileName="activity.iconFileName"
+        />
         <div
           :style="{
             'flex-direction': 'column',
@@ -92,11 +95,7 @@ export default {
     ActivityIcon,
     ActivityScore,
   },
-  computed: {
-    isJr() {
-      return this.activity.product === "bpjr";
-    },
-  },
+
   data() {
     return {
       showModal: false,

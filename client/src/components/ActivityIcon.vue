@@ -15,7 +15,12 @@
 
 <script>
 export default {
-  props: ["isJr", "iconFileName"],
+  props: ["product", "iconFileName"],
+  computed: {
+    isJr() {
+      return this.product === "bpjr";
+    },
+  },
 };
 </script>
 
@@ -48,5 +53,9 @@ export default {
   padding: 5px;
   background-color: #01c5c4;
   position: relative;
+}
+
+.activity-icon.jr-icon {
+  background-color: #f7ae11;
 }
 </style>
