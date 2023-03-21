@@ -38,6 +38,11 @@ export default {
         group[month].activities.push(formattedActivity);
         return group;
       }, {});
+      Object.values(groups).forEach((group) => {
+        group.activities.sort((a, b) => {
+          return a.d_created - b.d_created;
+        });
+      });
       return groups;
     },
   },
