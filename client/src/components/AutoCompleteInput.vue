@@ -1,5 +1,5 @@
 <template>
-  <div class="auto-complete-container">
+  <div class="auto-complete-container" v-clickoutside="hideOptionsList">
     <div class="input-container">
       <input
         placeholder="Search timeline"
@@ -7,6 +7,7 @@
         :value="selectedVal"
         @input="handleChange"
         @onKeyUp="handler"
+        @focus="showOptionsList"
       />
       <div
         :style="{
@@ -37,11 +38,7 @@
       </div>
     </div>
 
-    <div
-      class="options-list"
-      v-show="showOptionsList && hasOptions"
-      v-clickoutside="hideOptionsList"
-    >
+    <div class="options-list" v-show="isOptionsListShown && hasOptions">
       <div
         v-for="(option, idx) in filteredOptions"
         :key="'' + option + idx"
@@ -58,7 +55,7 @@ export default {
   props: ["options"],
   data() {
     return {
-      showOptionsList: true,
+      isOptionsListShown: false,
       selectedVal: "",
     };
   },
@@ -66,14 +63,17 @@ export default {
     handleChange(e) {
       const input = e.target.value;
       this.selectedVal = input;
-      this.showOptionsList = true;
+      this.isOptionsListShown = true;
 
       if (input === "") {
         this.$emit("onOptionSelected", input);
       }
     },
     hideOptionsList() {
-      this.showOptionsList = false;
+      this.isOptionsListShown = false;
+    },
+    showOptionsList() {
+      this.isOptionsListShown = true;
     },
     handler(e) {
       this.selectedVal = e.target.value;
@@ -81,7 +81,7 @@ export default {
     onOptionSelected(value) {
       this.$emit("onOptionSelected", value);
       this.selectedVal = value;
-      this.showOptionsList = false;
+      this.isOptionsListShown = false;
     },
   },
   computed: {
