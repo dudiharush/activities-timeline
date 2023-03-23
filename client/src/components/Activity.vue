@@ -52,6 +52,15 @@
             :time="activity.displayTime"
           />
         </div>
+        <div
+          @click="$emit('hide-activity-clicked', activity.id)"
+          :style="{
+            cursor: 'pointer',
+          }"
+          tooltip="hide"
+        >
+          <HideIcon />
+        </div>
       </div>
       <div
         :style="{ display: 'flex', gap: '10px' }"
@@ -81,6 +90,8 @@
 <script>
 import { getSettings } from "../activitySettingsMap";
 import EyeIcon from "./EyeIcon.vue";
+import HideIcon from "./HideIcon.vue";
+
 import ActivityModal from "./ActivityModal.vue";
 import ActivityTime from "./ActivityTime.vue";
 import ActivityIcon from "./ActivityIcon.vue";
@@ -90,6 +101,7 @@ export default {
   props: ["activity"],
   components: {
     EyeIcon,
+    HideIcon,
     ActivityModal,
     ActivityTime,
     ActivityIcon,

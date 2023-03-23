@@ -14,6 +14,7 @@
       :activityGroup="activityGroup"
       :index="index"
       :key="key"
+      @hide-activity-clicked="hideActivity"
     >
     </ActivityGroup>
   </div>
@@ -38,12 +39,14 @@ export default {
       listItems: [],
       selectedActivityTypes: [],
       filterText: "",
+      hiddenActivityIds: [],
     };
   },
   computed: {
     activityGroupsByMonth() {
       const groups = this.listItems.reduce((group, activity) => {
         if (
+          this.hiddenActivityIds.includes(activity.id) ||
           (this.selectedActivityTypes.length > 0 &&
             !this.selectedActivityTypes.includes(activity.resource_type)) ||
           (this.filterText.length > 0 &&
@@ -76,7 +79,6 @@ export default {
       this.listItems.forEach((activity) => {
         topicNames.add(activity.topic_data.name);
       });
-      console.log(JSON.stringify([...topicNames]));
       return [...topicNames];
     },
   },
@@ -98,9 +100,31 @@ export default {
     onTextFilterOptionSelected(selection) {
       this.filterText = selection;
     },
+    hideActivity(activityId) {
+      this.hiddenActivityIds.push(activityId);
+      this.saveHiddenActivityIds();
+    },
+    saveHiddenActivityIds() {
+      localStorage.setItem(
+        "hiddenActivityIds",
+        JSON.stringify(this.hiddenActivityIds)
+      );
+    },
+    loadHiddenActivityIds() {
+      if (localStorage.getItem("hiddenActivityIds")) {
+        try {
+          this.hiddenActivityIds = JSON.parse(
+            localStorage.getItem("hiddenActivityIds")
+          );
+        } catch (e) {
+          localStorage.removeItem("hiddenActivityIds");
+        }
+      }
+    },
   },
   mounted() {
     this.fetchActivities();
+    this.loadHiddenActivityIds();
   },
 };
 </script>

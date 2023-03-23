@@ -27,6 +27,7 @@
       v-for="activity in activityGroup.activities"
       :key="activity.id"
       :activity="activity"
+      @hide-activity-clicked="hideActivityClicked"
     >
     </Activity>
   </div>
@@ -38,6 +39,11 @@ import Activity from "./Activity.vue";
 export default {
   components: {
     Activity,
+  },
+  methods: {
+    hideActivityClicked(activityId) {
+      this.$emit("hide-activity-clicked", activityId);
+    },
   },
   props: ["activityGroup", "monthName", "index"],
 };
