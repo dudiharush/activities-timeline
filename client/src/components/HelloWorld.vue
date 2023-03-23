@@ -4,6 +4,11 @@
       @select-filter="selectFilter"
       :selectedActivityTypes="selectedActivityTypes"
     />
+    <AutoCompleteInput
+      :options="topicNames"
+      @onOptionSelected="onTextFilterOptionSelected"
+      v-model="filterText"
+    />
     <ActivityGroup
       v-for="(activityGroup, key, index) in activityGroupsByMonth"
       :activityGroup="activityGroup"
@@ -17,6 +22,7 @@
 <script>
 import ActivityGroup from "./ActivityGroup.vue";
 import FilterByType from "./FilterByType.vue";
+import AutoCompleteInput from "./AutoCompleteInput.vue";
 
 import { formatActivity } from "../utils.js";
 
@@ -24,20 +30,26 @@ export default {
   components: {
     ActivityGroup,
     FilterByType,
+    AutoCompleteInput,
   },
   name: "HelloWorld",
   data() {
     return {
       listItems: [],
       selectedActivityTypes: [],
+      filterText: "",
     };
   },
   computed: {
-    activityGroupsByMonth: function () {
+    activityGroupsByMonth() {
       const groups = this.listItems.reduce((group, activity) => {
         if (
-          this.selectedActivityTypes.length > 0 &&
-          !this.selectedActivityTypes.includes(activity.resource_type)
+          (this.selectedActivityTypes.length > 0 &&
+            !this.selectedActivityTypes.includes(activity.resource_type)) ||
+          (this.filterText.length > 0 &&
+            !activity.topic_data.name
+              .toLowerCase()
+              .includes(this.filterText.toLowerCase().trim()))
         ) {
           return group;
         }
@@ -59,6 +71,14 @@ export default {
       });
       return groups;
     },
+    topicNames() {
+      const topicNames = new Set();
+      this.listItems.forEach((activity) => {
+        topicNames.add(activity.topic_data.name);
+      });
+      console.log(JSON.stringify([...topicNames]));
+      return [...topicNames];
+    },
   },
   methods: {
     async fetchActivities() {
@@ -74,6 +94,9 @@ export default {
       } else {
         this.selectedActivityTypes.push(selectedActivityType);
       }
+    },
+    onTextFilterOptionSelected(selection) {
+      this.filterText = selection;
     },
   },
   mounted() {
