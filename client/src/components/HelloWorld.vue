@@ -10,7 +10,7 @@
       v-model="filterText"
     />
     <ActivityGroup
-      v-for="(activityGroup, key, index) in activityGroupsByMonth"
+      v-for="(activityGroup, key, index) in filteredActivityGroups"
       :activityGroup="activityGroup"
       :index="index"
       :key="key"
@@ -43,36 +43,34 @@ export default {
     };
   },
   computed: {
-    activityGroupsByMonth() {
-      const groups = this.listItems.reduce((group, activity) => {
-        if (
-          this.hiddenActivityIds.includes(activity.id) ||
-          (this.selectedActivityTypes.length > 0 &&
-            !this.selectedActivityTypes.includes(activity.resource_type)) ||
-          (this.filterText.length > 0 &&
-            !activity.topic_data.name
-              .toLowerCase()
-              .includes(this.filterText.toLowerCase().trim()))
-        ) {
-          return group;
-        }
-        const date = new Date(0);
-        date.setUTCSeconds(activity.d_created);
-        const month = date.getMonth();
-        group[month] = group[month] || {
-          name: date.toLocaleString("en-us", { month: "short" }),
-          activities: [],
-        };
-        const formattedActivity = formatActivity(activity);
-        group[month].activities.push(formattedActivity);
-        return group;
-      }, {});
-      Object.values(groups).forEach((group) => {
-        group.activities.sort((a, b) => {
-          return a.d_created - b.d_created;
-        });
-      });
-      return groups;
+    filteredActivityGroups() {
+      const filteredGroups = Object.entries(this.activityGroupsByMonth).reduce(
+        (filteredGroups, [groupKey, group]) => {
+          const filteredActivities = group.activities.filter((activity) => {
+            return (
+              !this.hiddenActivityIds.includes(activity.id) &&
+              (this.selectedActivityTypes.length === 0 ||
+                this.selectedActivityTypes.includes(activity.resource_type)) &&
+              (this.filterText.length === 0 ||
+                activity.topic_data.name
+                  .toLowerCase()
+                  .includes(this.filterText.toLowerCase().trim()))
+            );
+          });
+
+          if (filteredActivities.length > 0) {
+            filteredGroups[groupKey] = {
+              ...group,
+              activities: filteredActivities,
+            };
+          }
+
+          return filteredGroups;
+        },
+        {}
+      );
+
+      return filteredGroups;
     },
     topicNames() {
       const topicNames = new Set();
@@ -80,6 +78,26 @@ export default {
         topicNames.add(activity.topic_data.name);
       });
       return [...topicNames];
+    },
+    activityGroupsByMonth() {
+      const groups = this.listItems.reduce((groups, activity) => {
+        const date = new Date(0);
+        date.setUTCSeconds(activity.d_created);
+        const month = date.getMonth();
+        groups[month] = groups[month] || {
+          name: date.toLocaleString("en-us", { month: "short" }),
+          activities: [],
+        };
+        const formattedActivity = formatActivity(activity);
+        groups[month].activities.push(formattedActivity);
+        return groups;
+      }, {});
+      Object.values(groups).forEach((group) => {
+        group.activities.sort((a, b) => {
+          return a.d_created - b.d_created;
+        });
+      });
+      return groups;
     },
   },
   methods: {
