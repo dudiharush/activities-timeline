@@ -14,9 +14,15 @@ export default {
   },
   methods: {
     async fetchActivities() {
-      const res = await fetch("http://localhost:3000/activities/v1");
+      const res = await fetch("http://localhost:3000/activities/v2");
       const jsonRes = await res.json();
-      this.listItems = jsonRes;
+
+      this.listItems = jsonRes.flatMap((activitiesByResourceType) =>
+        activitiesByResourceType.activities.map((activity) => ({
+          resource_type: activitiesByResourceType.resource_type,
+          ...activity,
+        }))
+      );
     },
   },
   mounted() {

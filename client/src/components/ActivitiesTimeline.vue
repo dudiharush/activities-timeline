@@ -33,10 +33,9 @@ export default {
     FilterByType,
     AutoCompleteInput,
   },
-  name: "HelloWorld",
+  props: ["listItems"],
   data() {
     return {
-      listItems: [],
       selectedActivityTypes: [],
       filterText: "",
       hiddenActivityIds: [],
@@ -101,11 +100,6 @@ export default {
     },
   },
   methods: {
-    async fetchActivities() {
-      const res = await fetch("http://localhost:3000/activities/v1");
-      const jsonRes = await res.json();
-      this.listItems = jsonRes;
-    },
     selectFilter(selectedActivityType) {
       if (this.selectedActivityTypes.includes(selectedActivityType)) {
         this.selectedActivityTypes = this.selectedActivityTypes.filter(
@@ -141,7 +135,6 @@ export default {
     },
   },
   mounted() {
-    this.fetchActivities();
     this.loadHiddenActivityIds();
   },
 };
