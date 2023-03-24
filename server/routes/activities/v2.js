@@ -1,5 +1,5 @@
 module.exports = [{
-    resource_type: 'challenge',
+  resource_type: 'challenge',
     activities: [{
       id: '1',
       score: '10',
