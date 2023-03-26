@@ -1,21 +1,11 @@
-# client
+### v1 resource timeline route
 
-## Project setup
-```
-npm install
-```
+localhost:8080
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### v2 resource timeline type route:
 
-### Compiles and minifies for production
-```
-npm run build
-```
+localhost:8080/timeline-v2
 
-### Lints and fixes files
-```
-npm run lint
-```
+### Activity page route:
+
+localhost:8080/activity/[activity number] ex: localhost:8080/activity/1
