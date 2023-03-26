@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ margin: 'auto', width: '60%' }">
+  <div class="timeline-container">
     <FilterByType
       @select-filter="selectFilter"
       :selectedActivityTypes="selectedActivityTypes"
@@ -163,5 +163,10 @@ export default {
   font-size: 12px;
   display: flex;
   justify-content: center;
+}
+
+.timeline-container {
+  margin: auto;
+  width: 60%;
 }
 </style>

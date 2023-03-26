@@ -6,35 +6,13 @@
       :monthName="activity.date.toLocaleString('en-us', { month: 'short' })"
     />
     <ActivitySeparator />
-    <div
-      :style="{
-        border: '2px solid #C5C5C5',
-        padding: '20px',
-        display: 'flex',
-        'justify-content': 'space-between',
-        'align-items': 'center',
-        'border-radius': '5px',
-      }"
-    >
-      <div
-        :style="{
-          display: 'flex',
-          gap: '5x',
-          'align-items': 'center',
-          gap: '10px',
-        }"
-      >
+    <div class="activity-container">
+      <div class="activity-info-container">
         <ActivityIcon
           :product="activity.product"
           :iconFileName="activity.iconFileName"
         />
-        <div
-          :style="{
-            'flex-direction': 'column',
-            display: 'flex',
-            gap: '4px',
-          }"
-        >
+        <div class="activity-name-and-time-container">
           <div
             :style="{
               'font-weight': 'bold',
@@ -51,16 +29,12 @@
         </div>
         <div
           @click="$emit('hide-activity-clicked', activity.id)"
-          :style="{
-            cursor: 'pointer',
-          }"
-          tooltip="hide"
+          class="hide-activity"
         >
           <HideIcon />
         </div>
       </div>
       <div
-        :style="{ display: 'flex', gap: '10px' }"
         class="activity-settings"
         :class="getActivityClasses(activity.resource_type)"
       >
@@ -69,9 +43,9 @@
           :possibleScore="activity.possible_score"
         />
         <div class="zoom-element" @click="showModal = true">
-          <div :style="{ display: 'flex', gap: '4px' }">
+          <div class="view-work-container">
             <EyeIcon />
-            <div :style="{ margin: 'auto' }">View work</div>
+            <div class="view-work-label">View work</div>
           </div>
         </div>
       </div>
@@ -126,6 +100,8 @@ export default {
 .activity-settings {
   color: #017575;
   align-items: center;
+  display: flex;
+  gap: 10px;
 }
 .activity-settings.score .score-element,
 .activity-settings.zoom .zoom-element {
@@ -142,5 +118,40 @@ export default {
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
+}
+
+.activity-container {
+  border: 2px solid #c5c5c5;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.activity-info-container {
+  display: flex;
+  gap: 5x;
+  align-items: center;
+  gap: 10px;
+}
+
+.activity-name-and-time-container {
+  flex-direction: column;
+  display: flex;
+  gap: 4px;
+}
+
+.hide-activity {
+  cursor: "pointer";
+}
+
+.view-work-container {
+  display: flex;
+  gap: 4px;
+}
+
+.view-work-label {
+  margin: auto;
 }
 </style>

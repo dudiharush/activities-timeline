@@ -1,6 +1,6 @@
 <template>
   <div class="score-element" :v-show="hasScore">
-    Score<b :style="{ 'padding-inline-start': '4px' }">{{ score }}</b
+    Score<b class="score-numbers">{{ score }}</b
     >/<b>{{ possibleScore }}</b>
   </div>
 </template>
@@ -14,5 +14,9 @@ export default {
 <style scoped>
 .score-element {
   color: #017575;
+}
+
+.score-numbers {
+  padding-inline-start: 4px;
 }
 </style>

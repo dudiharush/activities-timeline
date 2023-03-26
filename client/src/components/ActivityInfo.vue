@@ -1,20 +1,13 @@
 <template>
-  <div :style="{ display: 'flex', 'flex-direction': 'column', height: '100%' }">
-    <div
-      :style="{
-        display: 'flex',
-        'flex-direction': 'column',
-        'align-items': 'center',
-        gap: '10px',
-      }"
-    >
+  <div class="activity-info-container">
+    <div class="activity-basic-info-container">
       <div>
         <ActivityIcon
           :product="activity.product"
           :iconFileName="activity.iconFileName"
         />
       </div>
-      <div :style="{ 'font-size': '40px', color: 'black' }">
+      <div class="activity-topic">
         {{ activity.topic_data.name }}
       </div>
       <ActivityTime
@@ -83,5 +76,23 @@ export default {
 
 .score-element {
   font-size: 24px;
+}
+
+.activity-info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.activity-basic-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.activity-topic {
+  font-size: 40px;
+  color: black;
 }
 </style>
