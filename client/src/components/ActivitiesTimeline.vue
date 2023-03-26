@@ -6,7 +6,8 @@
     />
     <AutoCompleteInput
       :options="topicNames"
-      @onOptionSelected="onTextFilterOptionSelected"
+      @onOptionSelected="setFilterText"
+      @onInputChanged="setFilterText"
       v-model="filterText"
     />
     <Activity
@@ -123,7 +124,7 @@ export default {
     loadMoreActivities() {
       this.currentPage++;
     },
-    onTextFilterOptionSelected(selection) {
+    setFilterText(selection) {
       this.filterText = selection;
     },
     hideActivity(activityId) {

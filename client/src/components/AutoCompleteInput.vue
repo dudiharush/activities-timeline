@@ -64,10 +64,7 @@ export default {
       const input = e.target.value;
       this.selectedVal = input;
       this.isOptionsListShown = true;
-
-      if (input === "") {
-        this.$emit("onOptionSelected", input);
-      }
+      this.$emit("onInputChanged", input);
     },
     hideOptionsList() {
       this.isOptionsListShown = false;
