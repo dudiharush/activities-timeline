@@ -17,7 +17,10 @@
       <div :style="{ 'font-size': '40px', color: 'black' }">
         {{ activity.topic_data.name }}
       </div>
-      <ActivityTime :date="activity.displayDate" :time="activity.displayTime" />
+      <ActivityTime
+        :date="activity.formattedDate"
+        :time="activity.formattedTime"
+      />
     </div>
     <div class="activity-details">
       <div class="activity-comment">

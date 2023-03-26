@@ -1,14 +1,11 @@
 <template>
   <div>
-    <div :style="{ height: '15px', 'padding-inline-start': '50px' }">
-      <div
-        :style="{
-          'background-color': '#C5C5C5',
-          height: '100%',
-          width: '1px',
-        }"
-      />
-    </div>
+    <ActivitiesMonth
+      v-if="activity.isFirstActivityInMonth"
+      :showSeparator="!activity.isFirstActivity"
+      :monthName="activity.date.toLocaleString('en-us', { month: 'short' })"
+    />
+    <ActivitySeparator />
     <div
       :style="{
         border: '2px solid #C5C5C5',
@@ -48,8 +45,8 @@
             {{ activity.topic_data.name }}
           </div>
           <ActivityTime
-            :date="activity.displayDate"
-            :time="activity.displayTime"
+            :date="activity.formattedDate"
+            :time="activity.formattedTime"
           />
         </div>
         <div
@@ -96,6 +93,8 @@ import ActivityModal from "./ActivityModal.vue";
 import ActivityTime from "./ActivityTime.vue";
 import ActivityIcon from "./ActivityIcon.vue";
 import ActivityScore from "./ActivityScore.vue";
+import ActivitiesMonth from "./ActivitiesMonth.vue";
+import ActivitySeparator from "./ActivitySeparator.vue";
 
 export default {
   props: ["activity"],
@@ -106,6 +105,8 @@ export default {
     ActivityTime,
     ActivityIcon,
     ActivityScore,
+    ActivitiesMonth,
+    ActivitySeparator,
   },
 
   data() {

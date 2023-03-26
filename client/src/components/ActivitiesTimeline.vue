@@ -9,94 +9,105 @@
       @onOptionSelected="onTextFilterOptionSelected"
       v-model="filterText"
     />
-    <ActivityGroup
-      v-for="(activityGroup, key, index) in filteredActivityGroups"
-      :activityGroup="activityGroup"
-      :index="index"
-      :key="key"
+    <Activity
+      v-for="activity in paginatedActivities"
+      :key="activity.id"
+      :activity="activity"
       @hide-activity-clicked="hideActivity"
     >
-    </ActivityGroup>
+    </Activity>
+    <div class="load-more" v-if="canLoadMore" @click="loadMoreActivities">
+      <ChevronDownIcon />
+      <div>Load more</div>
+    </div>
   </div>
 </template>
 
 <script>
-import ActivityGroup from "./ActivityGroup.vue";
 import FilterByType from "./FilterByType.vue";
 import AutoCompleteInput from "./AutoCompleteInput.vue";
+import Activity from "./Activity.vue";
+import ChevronDownIcon from "./ChevronDownIcon.vue";
 
 import { formatActivity } from "../utils.js";
+const PAGE_SIZE = 10;
 
 export default {
   components: {
-    ActivityGroup,
     FilterByType,
     AutoCompleteInput,
+    Activity,
+    ChevronDownIcon,
   },
-  props: ["listItems"],
+  props: {
+    activityList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       selectedActivityTypes: [],
       filterText: "",
       hiddenActivityIds: [],
+      currentPage: 1,
     };
   },
   computed: {
-    filteredActivityGroups() {
-      const filteredGroups = Object.entries(this.activityGroupsByMonth).reduce(
-        (filteredGroups, [groupKey, group]) => {
-          const filteredActivities = group.activities.filter((activity) => {
-            return (
-              !this.hiddenActivityIds.includes(activity.id) &&
-              (this.selectedActivityTypes.length === 0 ||
-                this.selectedActivityTypes.includes(activity.resource_type)) &&
-              (this.filterText.length === 0 ||
-                activity.topic_data.name
-                  .toLowerCase()
-                  .includes(this.filterText.toLowerCase().trim()))
-            );
-          });
+    displayedActivitiesCount() {
+      return PAGE_SIZE * this.currentPage;
+    },
+    paginatedActivities() {
+      if (this.filteredActivities.length === 0) return [];
 
-          if (filteredActivities.length > 0) {
-            filteredGroups[groupKey] = {
-              ...group,
-              activities: filteredActivities,
-            };
-          }
-
-          return filteredGroups;
-        },
-        {}
+      const slicedActivities = this.filteredActivities.slice(
+        0,
+        this.displayedActivitiesCount
       );
+      let activitiesMonth;
+      let activitiesWithMonthStartFlag = slicedActivities.map((activity) => {
+        const activityMonth = activity.date.getMonth();
+        if (activitiesMonth !== activityMonth) {
+          activitiesMonth = activityMonth;
+          return { ...activity, isFirstActivityInMonth: true };
+        }
+        return activity;
+      });
+      activitiesWithMonthStartFlag[0].isFirstActivity = true;
+      debugger;
+      return activitiesWithMonthStartFlag;
+    },
+    canLoadMore() {
+      return this.displayedActivitiesCount < this.activityList.length;
+    },
+    filteredActivities() {
+      const filteredActivities = this.sortedActivities.filter((activity) => {
+        return (
+          !this.hiddenActivityIds.includes(activity.id) &&
+          (this.selectedActivityTypes.length === 0 ||
+            this.selectedActivityTypes.includes(activity.resource_type)) &&
+          (this.filterText.length === 0 ||
+            activity.topic_data.name
+              .toLowerCase()
+              .includes(this.filterText.toLowerCase().trim()))
+        );
+      });
 
-      return filteredGroups;
+      return filteredActivities;
     },
     topicNames() {
       const topicNames = new Set();
-      this.listItems.forEach((activity) => {
+      this.activityList.forEach((activity) => {
         topicNames.add(activity.topic_data.name);
       });
       return [...topicNames];
     },
-    activityGroupsByMonth() {
-      const groups = this.listItems.reduce((groups, activity) => {
-        const date = new Date(0);
-        date.setUTCSeconds(activity.d_created);
-        const month = date.getMonth();
-        groups[month] = groups[month] || {
-          name: date.toLocaleString("en-us", { month: "short" }),
-          activities: [],
-        };
-        const formattedActivity = formatActivity(activity);
-        groups[month].activities.push(formattedActivity);
-        return groups;
-      }, {});
-      Object.values(groups).forEach((group) => {
-        group.activities.sort((a, b) => {
-          return a.d_created - b.d_created;
-        });
-      });
-      return groups;
+    sortedActivities() {
+      let sortedActivities = [...this.activityList].sort(
+        (a, b) => a.d_created - b.d_created
+      );
+      const formattedActivities = sortedActivities.map(formatActivity);
+      return formattedActivities;
     },
   },
   methods: {
@@ -108,6 +119,9 @@ export default {
       } else {
         this.selectedActivityTypes.push(selectedActivityType);
       }
+    },
+    loadMoreActivities() {
+      this.currentPage++;
     },
     onTextFilterOptionSelected(selection) {
       this.filterText = selection;
@@ -140,6 +154,14 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.load-more {
+  color: #008081;
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+}
 </style>

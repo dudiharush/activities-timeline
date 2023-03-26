@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ActivitiesTimeline :listItems="listItems" />
+    <ActivitiesTimeline :activityList="activityList" />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
       const res = await fetch("http://localhost:3000/activities/v2");
       const jsonRes = await res.json();
 
-      this.listItems = jsonRes.flatMap((activitiesByResourceType) =>
+      this.activityList = jsonRes.flatMap((activitiesByResourceType) =>
         activitiesByResourceType.activities.map((activity) => ({
           resource_type: activitiesByResourceType.resource_type,
           ...activity,
@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      listItems: [],
+      activityList: [],
     };
   },
 };

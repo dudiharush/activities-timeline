@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ActivitiesTimeline :listItems="listItems" />
+    <ActivitiesTimeline :activityList="activityList" />
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
     async fetchActivities() {
       const res = await fetch("http://localhost:3000/activities/v1");
       const jsonRes = await res.json();
-      this.listItems = jsonRes;
+      this.activityList = jsonRes;
     },
   },
   mounted() {
@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      listItems: [],
+      activityList: [],
     };
   },
 };
